@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upwork Proposal Generator - Feature Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .test-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .result.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.online {
+            background: #27ae60;
+        }
+
+        .status-indicator.offline {
+            background: #e74c3c;
+        }
+
+        .status-indicator.unknown {
+            background: #95a5a6;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .copy-btn {
+            background: #6c757d;
+            font-size: 12px;
+            padding: 6px 12px;
+            margin-left: 10px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Upwork Proposal Generator</h1>
+            <p>AI-Powered Proposal Generation System - Feature Testing Interface</p>
+        </div>
+
+        <div class="content">
+            <!-- API Connection Test -->
+            <div class="test-section">
+                <h2>🔌 API Connection Test</h2>
+                <div class="form-group">
+                    <label for="apiUrl">API Base URL:</label>
+                    <input type="text" id="apiUrl" value="http://127.0.0.1:8000" placeholder="http://localhost:8000">
+                </div>
+                <button class="btn" onclick="testConnection()">Test Connection</button>
+                <button class="btn btn-success" onclick="testOpenAI()">Test OpenAI</button>
+                <div id="connectionResult" class="result" style="display: none;"></div>
+            </div>
+
+            <!-- Authentication Test -->
+            <div class="test-section">
+                <h2>🔐 Authentication Test</h2>
+                <div class="grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" value="admin@admin.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" value="password">
+                        </div>
+                        <button class="btn" onclick="login()">Login</button>
+                        <button class="btn btn-warning" onclick="logout()">Logout</button>
+                        <button class="btn btn-success" onclick="getMe()">Get User Info</button>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>Auth Token:</label>
+                            <input type="text" id="authToken" readonly placeholder="Login to get token">
+                            <button class="btn copy-btn" onclick="copyToken()">Copy</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Status:</label>
+                            <span id="authStatus">
+                                <span class="status-indicator unknown"></span>Not authenticated
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="authResult" class="result" style="display: none;"></div>
+            </div>
+
+            <!-- Template Test -->
+            <div class="test-section">
+                <h2>📝 Template Management</h2>
+                <button class="btn" onclick="getTemplates()">Load Templates</button>
+                <div class="form-group">
+                    <label for="templateSelect">Available Templates:</label>
+                    <select id="templateSelect">
+                        <option value="">Select a template...</option>
+                    </select>
+                </div>
+                <div id="templateResult" class="result" style="display: none;"></div>
+            </div>
+
+            <!-- Proposal Generation Test -->
+            <div class="test-section">
+                <h2>🤖 Proposal Generation Test</h2>
+                <div class="grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="jobTitle">Job Title:</label>
+                            <input type="text" id="jobTitle" value="Full Stack Developer for E-commerce Platform">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobSkills">Skills:</label>
+                            <input type="text" id="jobSkills" value="React, Node.js, JavaScript, MongoDB, TypeScript">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobBudget">Budget:</label>
+                            <input type="text" id="jobBudget" value="$2000-$5000">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="jobDescription">Job Description:</label>
+                            <textarea id="jobDescription">We need a skilled developer to build a modern e-commerce platform using React and Node.js. The project includes user authentication, payment integration, and admin dashboard. Must have experience with TypeScript and modern development practices.</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <button class="btn" onclick="generateWithTemplate()">Generate with Template</button>
+                    <button class="btn btn-success" onclick="generateWithAI()">Generate with AI Only</button>
+                    <button class="btn btn-warning" onclick="generateWithReview()">Generate with AI Review</button>
+                </div>
+                
+                <div id="proposalResult" class="result" style="display: none;"></div>
+            </div>
+
+            <!-- Feature Checklist -->
+            <div class="test-section">
+                <h2>✅ Feature Checklist</h2>
+                <div class="grid">
+                    <div>
+                        <h3>Backend Features</h3>
+                        <ul class="feature-list">
+                            <li>Laravel API Server</li>
+                            <li>User Authentication (Sanctum)</li>
+                            <li>Template Management</li>
+                            <li>OpenAI Integration</li>
+                            <li>AI Review System</li>
+                            <li>Proposal Storage</li>
+                            <li>CORS Configuration</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Chrome Extension Features</h3>
+                        <ul class="feature-list">
+                            <li>Upwork Job Extraction</li>
+                            <li>Template Selection</li>
+                            <li>Proposal Generation</li>
+                            <li>Clipboard Integration</li>
+                            <li>Duplicate Detection</li>
+                            <li>User Interface</li>
+                            <li>Error Handling</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Test Commands -->
+            <div class="test-section">
+                <h2>⚡ Quick Test Commands</h2>
+                <p>Copy and paste these curl commands to test the API directly:</p>
+                
+                <div class="form-group">
+                    <label>Test OpenAI Connection:</label>
+                    <div class="result info">curl -X GET http://127.0.0.1:8000/api/v1/openai/test</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Login:</label>
+                    <div class="result info">curl -X POST http://127.0.0.1:8000/api/v1/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "admin@admin.com", "password": "password"}'</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Generate Proposal with AI Review:</label>
+                    <div class="result info">curl -X POST http://127.0.0.1:8000/api/v1/proposals/generate-with-review \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "job_title": "React Developer",
+    "job_description": "Build a modern web application",
+    "skills": "React, JavaScript, Node.js",
+    "budget": "$2000-$5000",
+    "template_id": 1
+  }'</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let authToken = '';
+        const apiUrl = () => document.getElementById('apiUrl').value;
+
+        // Utility functions
+        function showResult(elementId, content, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.className = `result ${type}`;
+            element.textContent = content;
+            element.style.display = 'block';
+        }
+
+        function showLoading(buttonElement) {
+            const loading = document.createElement('span');
+            loading.className = 'loading';
+            buttonElement.insertBefore(loading, buttonElement.firstChild);
+            buttonElement.disabled = true;
+        }
+
+        function hideLoading(buttonElement) {
+            const loading = buttonElement.querySelector('.loading');
+            if (loading) loading.remove();
+            buttonElement.disabled = false;
+        }
+
+        async function makeRequest(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...(authToken && { 'Authorization': `Bearer ${authToken}` }),
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                const data = await response.json();
+                return { success: response.ok, data, status: response.status };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Connection Tests
+        async function testConnection() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            try {
+                const response = await fetch(`${apiUrl()}/api/v1/openai/test`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('connectionResult', `✅ API Connected Successfully!\n\nResponse: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    showResult('connectionResult', `❌ Connection Failed\n\nStatus: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}`, 'error');
+                }
+            } catch (error) {
+                showResult('connectionResult', `❌ Connection Error: ${error.message}`, 'error');
+            } finally {
+                hideLoading(btn);
+            }
+        }
+
+        async function testOpenAI() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            const result = await makeRequest(`${apiUrl()}/api/v1/openai/test`);
+            
+            if (result.success) {
+                showResult('connectionResult', `✅ OpenAI Connection Test Passed!\n\n${JSON.stringify(result.data, null, 2)}`, 'success');
+            } else {
+                showResult('connectionResult', `❌ OpenAI Test Failed: ${result.error || JSON.stringify(result.data, null, 2)}`, 'error');
+            }
+            
+            hideLoading(btn);
+        }
+
+        // Authentication
+        async function login() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const result = await makeRequest(`${apiUrl()}/api/v1/login`, {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+            
+            if (result.success && result.data.success) {
+                authToken = result.data.data.token;
+                document.getElementById('authToken').value = authToken;
+                document.getElementById('authStatus').innerHTML = '<span class="status-indicator online"></span>Authenticated';
+                showResult('authResult', `✅ Login Successful!\n\nUser: ${result.data.data.user.name}\nEmail: ${result.data.data.user.email}\nToken: ${authToken.substring(0, 20)}...`, 'success');
+            } else {
+                showResult('authResult', `❌ Login Failed: ${result.data?.message || result.error}`, 'error');
+            }
+            
+            hideLoading(btn);
+        }
+
+        async function logout() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            if (authToken) {
+                await makeRequest(`${apiUrl()}/api/v1/logout`, { method: 'POST' });
+            }
+            
+            authToken = '';
+            document.getElementById('authToken').value = '';
+            document.getElementById('authStatus').innerHTML = '<span class="status-indicator offline"></span>Not authenticated';
+            showResult('authResult', '✅ Logged out successfully', 'success');
+            
+            hideLoading(btn);
+        }
+
+        async function getMe() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            if (!authToken) {
+                showResult('authResult', '❌ Please login first', 'error');
+                hideLoading(btn);
+                return;
+            }
+            
+            const result = await makeRequest(`${apiUrl()}/api/v1/me`);
+            
+            if (result.success) {
+                showResult('authResult', `✅ User Info Retrieved:\n\n${JSON.stringify(result.data, null, 2)}`, 'success');
+            } else {
+                showResult('authResult', `❌ Failed to get user info: ${result.error || JSON.stringify(result.data, null, 2)}`, 'error');
+            }
+            
+            hideLoading(btn);
+        }
+
+        function copyToken() {
+            const token = document.getElementById('authToken').value;
+            if (token) {
+                navigator.clipboard.writeText(token);
+                alert('Token copied to clipboard!');
+            }
+        }
+
+        // Templates
+        async function getTemplates() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            if (!authToken) {
+                showResult('templateResult', '❌ Please login first', 'error');
+                hideLoading(btn);
+                return;
+            }
+            
+            const result = await makeRequest(`${apiUrl()}/api/v1/templates`);
+            
+            if (result.success && result.data.success) {
+                const templates = result.data.data;
+                const select = document.getElementById('templateSelect');
+                select.innerHTML = '<option value="">Select a template...</option>';
+                
+                templates.forEach(template => {
+                    const option = document.createElement('option');
+                    option.value = template.id;
+                    option.textContent = `${template.name} - ${template.description}`;
+                    select.appendChild(option);
+                });
+                
+                showResult('templateResult', `✅ Loaded ${templates.length} templates:\n\n${JSON.stringify(templates, null, 2)}`, 'success');
+            } else {
+                showResult('templateResult', `❌ Failed to load templates: ${result.error || JSON.stringify(result.data, null, 2)}`, 'error');
+            }
+            
+            hideLoading(btn);
+        }
+
+        // Proposal Generation
+        function getJobData() {
+            return {
+                job_title: document.getElementById('jobTitle').value,
+                job_description: document.getElementById('jobDescription').value,
+                skills: document.getElementById('jobSkills').value,
+                budget: document.getElementById('jobBudget').value
+            };
+        }
+
+        async function generateWithTemplate() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            if (!authToken) {
+                showResult('proposalResult', '❌ Please login first', 'error');
+                hideLoading(btn);
+                return;
+            }
+            
+            const templateId = document.getElementById('templateSelect').value;
+            if (!templateId) {
+                showResult('proposalResult', '❌ Please select a template first', 'error');
+                hideLoading(btn);
+                return;
+            }
+            
+            const jobData = { ...getJobData(), template_id: parseInt(templateId) };
+            
+            const result = await makeRequest(`${apiUrl()}/api/v1/proposals/generate`, {
+                method: 'POST',
+                body: JSON.stringify(jobData)
+            });
+            
+            if (result.success && result.data.success) {
+                const proposal = result.data.data.proposal;
+                showResult('proposalResult', `✅ Template-based Proposal Generated!\n\nTemplate: ${result.data.data.template_name}\nProposal ID: ${result.data.data.proposal_id}\n\n--- PROPOSAL ---\n${proposal}`, 'success');
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(proposal);
+            } else {
+                showResult('proposalResult', `❌ Generation Failed: ${result.error || result.data?.message || JSON.stringify(result.data, null, 2)}`, 'error');
+            }
+            
+            hideLoading(btn);
+        }
+
+        async function generateWithAI() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            if (!authToken) {
+                showResult('proposalResult', '❌ Please login first', 'error');
+                hideLoading(btn);
+                return;
+            }
+            
+            const jobData = getJobData();
+            
+            const result = await makeRequest(`${apiUrl()}/api/v1/proposals/generate-openai`, {
+                method: 'POST',
+                body: JSON.stringify(jobData)
+            });
+            
+            if (result.success && result.data.success) {
+                const proposal = result.data.data.proposal;
+                showResult('proposalResult', `✅ AI Proposal Generated!\n\nModel: ${result.data.data.model}\nProposal ID: ${result.data.data.proposal_id}\n\n--- PROPOSAL ---\n${proposal}`, 'success');
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(proposal);
+            } else {
+                showResult('proposalResult', `❌ AI Generation Failed: ${result.error || result.data?.message || JSON.stringify(result.data, null, 2)}`, 'error');
+            }
+            
+            hideLoading(btn);
+        }
+
+        async function generateWithReview() {
+            const btn = event.target;
+            showLoading(btn);
+            
+            if (!authToken) {
+                showResult('proposalResult', '❌ Please login first', 'error');
+                hideLoading(btn);
+                return;
+            }
+            
+            const jobData = getJobData();
+            const templateId = document.getElementById('templateSelect').value;
+            if (templateId) {
+                jobData.template_id = parseInt(templateId);
+            }
+            
+            const result = await makeRequest(`${apiUrl()}/api/v1/proposals/generate-with-review`, {
+                method: 'POST',
+                body: JSON.stringify(jobData)
+            });
+            
+            if (result.success && result.data.success) {
+                const proposal = result.data.data.proposal;
+                const review = result.data.data.review;
+                
+                let reviewInfo = '';
+                if (review) {
+                    reviewInfo = `\n--- AI REVIEW ---
+Score: ${review.score}/10
+Generated By: ${result.data.data.generated_by}
+Was Revised: ${review.was_revised ? 'Yes' : 'No'}
+Strengths: ${review.strengths?.join(', ') || 'N/A'}
+Improvements: ${review.improvements?.join(', ') || 'N/A'}`;
+                }
+                
+                showResult('proposalResult', `✅ AI-Enhanced Proposal Generated!${reviewInfo}\n\n--- FINAL PROPOSAL ---\n${proposal}`, 'success');
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(proposal);
+            } else {
+                showResult('proposalResult', `❌ AI Review Generation Failed: ${result.error || result.data?.message || JSON.stringify(result.data, null, 2)}`, 'error');
+            }
+            
+            hideLoading(btn);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Upwork Proposal Generator Test Interface Loaded');
+            console.log('📋 Features to test:');
+            console.log('   - API Connection');
+            console.log('   - Authentication');
+            console.log('   - Template Management');
+            console.log('   - Proposal Generation (Template, AI, AI+Review)');
+        });
+    </script>
+</body>
+</html>""

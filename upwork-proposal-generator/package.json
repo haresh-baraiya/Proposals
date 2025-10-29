@@ -1,0 +1,20 @@
+{
+  "name": "upwork-proposal-generator",
+  "version": "1.0.0",
+  "description": "AI-powered Chrome extension for generating Upwork proposals",
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/upwork-proposal-generator"
+  },
+  "keywords": [
+    "chrome-extension",
+    "upwork",
+    "proposal",
+    "ai",
+    "openai",
+    "freelance",
+    "automation"
+  ]
+}

@@ -1,0 +1,20 @@
+# Development files
+.DS_Store
+*.log
+*.swp
+*.swo
+*~
+
+# Temporary files
+create_icons.html
+generate_icons.py
+create_simple_icons.sh
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+Thumbs.db
+

@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Upwork Proposal Generator",
+  "version": "1.0.0",
+  "description": "AI-powered proposal generator for Upwork job postings",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.upwork.com/*",
+    "https://proposal-api.test/*",
+    "http://localhost:8000/*",
+    "http://localhost/*",
+    "https://openrouter.ai/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.upwork.com/jobs/*", 
+        "https://www.upwork.com/ab/proposals/job/*",
+        "https://www.upwork.com/freelance-jobs/*",
+        "https://www.upwork.com/job/*"
+      ],
+      "js": ["scripts/content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "background": {
+    "service_worker": "scripts/background.js",
+    "type": "module"
+  }
+}
+

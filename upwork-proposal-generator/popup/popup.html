@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upwork Proposal Generator</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>📝 Upwork Proposal Generator</h1>
+    </header>
+
+    <main>
+      <!-- Login Section -->
+      <div id="loginSection" class="section login-section" style="display: none;">
+        <h2>Login Required</h2>
+        <p class="info-text">Please login to access the proposal generator.</p>
+
+        <div class="setting-group">
+          <label for="emailInput">Email:</label>
+          <input type="email" id="emailInput" class="auth-input" placeholder="your@email.com" required>
+        </div>
+
+        <div class="setting-group">
+          <label for="passwordInput">Password:</label>
+          <input type="password" id="passwordInput" class="auth-input" placeholder="Your password" required>
+        </div>
+
+        <div class="button-group">
+          <button id="loginBtn" class="btn btn-primary">
+            <span id="loginText">Login</span>
+            <span id="loginSpinner" class="spinner" style="display: none;">⏳</span>
+          </button>
+        </div>
+
+        <div id="loginErrorMessage" class="error-message" style="display: none;"></div>
+      </div>
+
+      <!-- Main App Section -->
+      <div id="appSection" style="display: none;">
+        <div class="section user-section">
+          <div class="user-info">
+            <span id="userWelcome">Welcome, User!</span>
+            <button id="logoutBtn" class="btn-link">Logout</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <p class="info-text">Navigate to an Upwork job posting and click the button below to generate a proposal.</p>
+        </div>
+
+        <div class="section status-section">
+          <div id="templateStatus" class="template-status">
+            <span id="templateStatusText">Loading templates...</span>
+          </div>
+        </div>
+
+        <div class="section settings-section">
+          <div class="setting-group">
+            <label for="templateSelect">Select Template:</label>
+            <select id="templateSelect" class="setting-select">
+              <option value="">Loading templates...</option>
+            </select>
+            <small class="help-text">Choose a template for AI proposal generation</small>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button id="extractBtn" class="btn btn-primary">
+            <span id="extractText">Generate Proposal</span>
+            <span id="loadingSpinner" class="spinner" style="display: none;">⏳</span>
+          </button>
+        </div>
+
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+        <div id="proposalSection" class="section proposal-section" style="display: none;">
+          <h2>Generated Proposal:</h2>
+          <div id="proposalContent" class="proposal-content"></div>
+          <div class="button-group">
+            <button id="copyBtn" class="btn btn-secondary">📋 Copy to Clipboard</button>
+            <button id="regenerateBtn" class="btn btn-secondary">🔄 Regenerate</button>
+          </div>
+          <div id="successMessage" class="success-message" style="display: none;">
+            ✅ Copied to clipboard!
+          </div>
+        </div>
+
+        <div class="section utility-section">
+          <div class="utility-header">
+            <h3>⚙️ Utilities</h3>
+          </div>
+          <div class="utility-actions">
+            <button id="clearHistoryBtn" class="btn-utility">🗑️ Clear Job History</button>
+            <span class="utility-help">Clear duplicate job detection history</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p class="small-text">Powered by Acquaint</p>
+    </footer>
+  </div>
+
+  <script src="../config.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>
